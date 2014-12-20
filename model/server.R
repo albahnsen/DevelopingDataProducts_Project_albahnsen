@@ -15,8 +15,8 @@ predict_all <- function(classifiers, x){
   return (p_hat)
 }
 
-load('../data/datasets.Rda')
-load('../data/models.Rda')
+load('datasets.Rda')
+load('models.Rda')
 
 accept <<- 'init'
 

@@ -8,7 +8,7 @@
 
 library(randomForest)
 
-load('data/datasets.Rda')
+load('model/datasets.Rda')
 
 # Evaluate a random forest per each set
 cla <- vector("list", 3)
@@ -18,7 +18,7 @@ for (i in 0:2){
                                ntree=500, mtry = ceiling(ncol(data.temp)^0.5))
 }
 
-save(cla, file='data/models.Rda')
+save(cla, file='model/models.Rda')
 
 
 # Prediction Function

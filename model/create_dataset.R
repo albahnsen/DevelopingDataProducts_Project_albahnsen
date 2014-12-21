@@ -117,4 +117,4 @@ table(data2.balanced$default)
 
 ############## JOIN DATASETS ######################
 data <- rbind(data0.balanced, data1.balanced, data2.balanced)
-save(data, file='data/datasets.Rda')
+save(data, file='model/datasets.Rda')

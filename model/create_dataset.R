@@ -21,7 +21,11 @@
 
 library(ROSE)
 
-####### PAKDD DATASET #########################################################
+data.info <- data.frame(matrix(data=NA, nrow = 5, ncol = 3))
+colnames(data.info) <- c('PAKDD', 'KAGGLE', 'GERMAN')
+rownames(data.info) <- c('No. Obs', 'No. Features', 'Raw Positive Rate', 'Balance Method', 'New Positive Rate')
+                         
+############## PAKDD DATASET #########################################################
 
 # Load and return the credit scoring Kaggle Credit competition dataset
 data0 <- read.table(gzfile("data/creditscoring2.csv.gz"), sep="\t", header=TRUE)
@@ -51,6 +55,12 @@ data0.new$residence <- (data0$RESIDENCE_TYPE == 'P') * 1
 table(data0.new$default)
 data0.balanced <- ovun.sample(default~., data=data0.new, p=0.5, seed=1, method="under")$data
 table(data0.balanced$default)
+
+data.info$PAKDD[1] = nrows
+data.info$PAKDD[2] = ncol(data0)
+data.info$PAKDD[3] = mean(data0.new$default)
+data.info$PAKDD[4] = 'Under-sampling'
+data.info$PAKDD[5] = mean(data0.balanced$default)
 
 
 ####### KAGGLE DATASET #########################################################
@@ -84,6 +94,11 @@ data1.new$residence <- 0
 # Undesampling since nrows is high
 data1.balanced <- ovun.sample(default~., data=data1.new, p=0.5, seed=1, method="under")$data
 
+data.info$KAGGLE[1] = nrows
+data.info$KAGGLE[2] = ncol(data1)
+data.info$KAGGLE[3] = mean(data1.new$default)
+data.info$KAGGLE[4] = 'Under-sampling'
+data.info$KAGGLE[5] = mean(data1.balanced$default)
 
 ####### GERMAN DATASET #########################################################
 
@@ -115,6 +130,14 @@ table(data2.new$default)
 data2.balanced <- ovun.sample(default~., data=data2.new, p=0.5, seed=1, N=10000, method="both")$data
 table(data2.balanced$default)
 
+data.info$GERMAN[1] = nrows
+data.info$GERMAN[2] = ncol(data2.cat)+ncol(data2.con)
+data.info$GERMAN[3] = mean(data2.new$default)
+data.info$GERMAN[4] = 'Under/Over-sampling'
+data.info$GERMAN[5] = mean(data2.balanced$default)
+
 ############## JOIN DATASETS ######################
 data <- rbind(data0.balanced, data1.balanced, data2.balanced)
 save(data, file='model/datasets.Rda')
+
+save(data.info, file='DevelopingDataProducts_Slides_albahnsen/datasets_info.Rda')

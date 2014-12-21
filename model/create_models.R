@@ -36,8 +36,8 @@ predict_all <- function(classifiers, x){
 }
 
 library(randomForest)
-load('data/datasets.Rda')
-load('data/models.Rda')
+load('model/datasets.Rda')
+load('model/models.Rda')
 
 # Evaluate the whole dataset
 p_hat <- predict_all(cla, data[,c(-1, -8)])

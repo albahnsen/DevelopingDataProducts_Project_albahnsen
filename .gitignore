@@ -3,3 +3,7 @@
 .RData
 *.xls
 .~lock*
+*.gitkeep
+*.nojekyll
+*.css
+*~

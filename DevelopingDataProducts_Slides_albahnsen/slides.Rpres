@@ -18,17 +18,72 @@ The datasets were selected such that they contain similar structure and features
 
 Afterwards a credit scoring model is create using each datasets and then combine to generate a prediction.
 
-For more information on credit scoring see (http://wikipedia.org/credit_scoring)
+For more information on credit scoring see http://wikipedia.org/credit_scoring
 
 Datasets
 ===
-credir risk assesment using public datasets
+The following datasets were selected:
+  - German credit (http://archive.ics.uci.edu/ml/datasets/Statlog+%28German+Credit+Data%29)
+  - Kaggle Credit (http://www.kaggle.com/c/GiveMeSomeCredit)
+  - PAKDD Credit  (http://sede.neurotech.com.br:443/PAKDD2009/)
 
-In particular the following datasets
-    - German credit (http://archive.ics.uci.edu/ml/datasets/Statlog+%28German+Credit+Data%29)
-    - Kaggle Credit (http://www.kaggle.com/c/GiveMeSomeCredit)
-    - PAKDD Credit  (http://sede.neurotech.com.br:443/PAKDD2009/)
+This because they contain similar structure and features. 
 
+Datasets2
+===
+
+## Datasets information
+
+```{r, echo=FALSE}
+load(file='datasets_info.Rda')
+rownames(data.info) <- c('No. Obs', 'No. Features', 'Default Rate', 'Balance Method', 'New Default Rate')
+data.info[3,] <- round(as.numeric(data.info[3,]),3)
+data.info[c(-4,-5),]
+```
+
+The datasets were balanced using the ROSE package
+
+```{r, echo=FALSE}
+data.info[5,] <- round(as.numeric(data.info[5,]),3)
+data.info[4,] <- c('under','under','under/over')
+data.info[c(-1,-2,-3),]
+```
+
+Datasets3
+===
+
+With the objective of having comparable models, the following features were created
+  - Perfect credit history (bool)
+  - Age (numeric)
+  - Number of credits (numeric)
+  - Marital Status = Single (bool)
+  - Residence type = Own (bool)
+  - Income Rate (low, mid, high)
+
+The source code to create the datasets is available at: https://github.com/albahnsen/DevelopingDataProducts_Project_albahnsen/tree/master/model/create_dataset.R
+  
+Algorithms
+===
+Using the random forest library one model is trained for each dataset
+```{r, eval=FALSE}
+library(randomForest)
+load('model/datasets.Rda')
+cla <- vector("list", 3)
+for (i in 0:2){
+    data.temp = data[data$set == i, -1]
+    cla[[i+1]] <- randomForest(
+                  factor(default) ~ .,
+                  data.temp, ntree=500)
+}
+save(cla, file='model/models.Rda')
+```
+
+For more information on Random Forests Algorithm see http://wikipedia.org/Random_Forest
+
+Prediction
+===
+
+After the algorithms are trained
 
 Slide With Plot
 ========================================================

@@ -8,7 +8,7 @@
 
 library(randomForest)
 
-load('model/datasets.Rda')
+load('DevelopingDataProducts_Shiny_albahnsen/datasets.Rda')
 
 # Evaluate a random forest per each set
 cla <- vector("list", 3)
@@ -18,7 +18,7 @@ for (i in 0:2){
                                ntree=500, mtry = ceiling(ncol(data.temp)^0.5))
 }
 
-save(cla, file='model/models.Rda')
+save(cla, file='DevelopingDataProducts_Shiny_albahnsen/models.Rda')
 
 
 # Prediction Function
@@ -36,8 +36,8 @@ predict_all <- function(classifiers, x){
 }
 
 library(randomForest)
-load('model/datasets.Rda')
-load('model/models.Rda')
+load('DevelopingDataProducts_Shiny_albahnsen/datasets.Rda')
+load('DevelopingDataProducts_Shiny_albahnsen/models.Rda')
 
 # Evaluate the whole dataset
 p_hat <- predict_all(cla, data[,c(-1, -8)])

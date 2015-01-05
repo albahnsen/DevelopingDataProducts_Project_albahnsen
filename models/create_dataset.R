@@ -28,7 +28,7 @@ rownames(data.info) <- c('No. Obs', 'No. Features', 'Raw Positive Rate', 'Balanc
 ############## PAKDD DATASET #########################################################
 
 # Load and return the credit scoring Kaggle Credit competition dataset
-data0 <- read.table(gzfile("data/creditscoring2.csv.gz"), sep="\t", header=TRUE)
+data0 <- read.table(gzfile("models/creditscoring2.csv.gz"), sep="\t", header=TRUE)
 # Keep only compleate cases
 data0$X <- NULL
 data0 <- data0[complete.cases(data0),]
@@ -66,7 +66,7 @@ data.info$PAKDD[5] = mean(data0.balanced$default)
 ####### KAGGLE DATASET #########################################################
 
 # Load and return the credit scoring Kaggle Credit competition dataset
-data1 <- read.table(gzfile("data/creditscoring1.csv.gz"), sep=",", header=TRUE)
+data1 <- read.table(gzfile("models/creditscoring1.csv.gz"), sep=",", header=TRUE)
 # Keep only compleate cases
 data1 <- data1[complete.cases(data1),]
 nrows <- nrow(data1)
@@ -92,7 +92,9 @@ data1.new$default <- data1$SeriousDlqin2yrs
 data1.new$residence <- 0
 
 # Undesampling since nrows is high
+table(data1.new$default)
 data1.balanced <- ovun.sample(default~., data=data1.new, p=0.5, seed=1, method="under")$data
+table(data1.balanced$default)
 
 data.info$KAGGLE[1] = nrows
 data.info$KAGGLE[2] = ncol(data1)
@@ -103,8 +105,8 @@ data.info$KAGGLE[5] = mean(data1.balanced$default)
 ####### GERMAN DATASET #########################################################
 
 # Load and return the credit scoring Kaggle Credit competition dataset
-data2.cat <- read.table("data/german.data")
-data2.con <- read.table("data/german.data-numeric")
+data2.cat <- read.table("models/german.data")
+data2.con <- read.table("models/german.data-numeric")
 
 nrows <- nrow(data2.cat)
 
@@ -138,6 +140,6 @@ data.info$GERMAN[5] = mean(data2.balanced$default)
 
 ############## JOIN DATASETS ######################
 data <- rbind(data0.balanced, data1.balanced, data2.balanced)
-save(data, file='model/datasets.Rda')
+save(data, file='DevelopingDataProducts_Shiny_albahnsen/datasets.Rda')
 
 save(data.info, file='DevelopingDataProducts_Slides_albahnsen/datasets_info.Rda')

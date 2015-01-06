@@ -21,10 +21,27 @@ load('datasets.Rda')
 load('models.Rda')
 
 shinyServer(
-    function(input, output) {
+    function(input, output, session) {
         
-        scores <- reactive({
+        observe({
+            if (input$goButton){
+                
+                # random selection
+                row_ <- sample(1:nrow(data), 1)
+                test = data[c(row_),c(-1, -8)]
+                # print(test)
+                updateSliderInput(session, "age", value = test$age)
+                updateSliderInput(session, "ncredits", value = test$ncredits)
+                updateCheckboxInput(session, "credithist", value = test$credithist )
+                updateCheckboxInput(session, "marital", value = test$marital )
+                updateCheckboxInput(session, "residence", value = test$residence )
+                updateRadioButtons(session, "income", 
+                                   choices = c("Low" = 1,"Mid" = 2, "High" = 3), ## BUG!!! does not work without choices
+                                   selected = test$income)                
+            }
+        })
             
+        scores <- reactive({ 
             test = data[c(1),c(-1, -8)]
             test$age = input$age
             test$ncredits = input$ncredits
@@ -32,18 +49,13 @@ shinyServer(
             test$income = input$income
             test$marital = input$marital
             test$residence = input$residence
-            
+
             p_test <- predict_all(cla, test)
-            
-            x <- melt(p_test)$value
+            x <- t(p_test)
             x
         })
         
         output$newHist <- renderPlot({
-              
-          # TODO: Add random user
-          #input$goButton
-          #  isolate(test = data[c(20080),c(-1, -8)])
 
           x <- scores()
           xfit <-seq(0,1000,length=1000)
@@ -82,18 +94,3 @@ shinyServer(
         
     }
 )
-
-
-# shinyServer(
-#     function(input, output) {
-#         output$newHist <- renderPlot({
-#             hist(galton$child, xlab='child height', col='lightblue',main='Histogram')
-#             mu <- input$mu
-#             lines(c(mu, mu), c(0, 200),col="red",lwd=5)
-#             mse <- mean((galton$child - mu)^2)
-#             text(63, 150, paste("mu = ", mu))
-#             text(63, 140, paste("MSE = ", round(mse, 2)))
-#         })
-#         
-#     }
-# )

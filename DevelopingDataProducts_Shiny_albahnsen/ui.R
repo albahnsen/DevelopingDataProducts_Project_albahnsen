@@ -19,9 +19,7 @@ shinyUI(pageWithSidebar(
           with a scorecard lower than 500 is not suitable for a loan.
           '),
         plotOutput('newHist'),
-        p('According to the input parameters the estimated score is:'),
         textOutput('text_score'),
-        p('given the inputs a hipotetical loan will be:'),
         textOutput('text1'),
         h6('Disclaimer: The information on the Site is provided for educational or information purposes only; 
            it is not intended to be a substitute for an actual credit risk (scorecard) estimator.')

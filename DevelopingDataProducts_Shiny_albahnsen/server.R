@@ -84,12 +84,13 @@ shinyServer(
             x <- scores()
             if (mean(x) <= 500) accept <- "Declined"
             else accept <- "Accepted"
-            accept
+            paste('given the inputs a hipotetical loan will be: ',accept)
         })
         
         output$text_score <- renderText({ 
             x <- scores()
-            paste(toString(round(mean(x))), '+/-', toString(round(sd(x))))
+            paste('According to the input parameters the estimated score is: ',
+                  toString(round(mean(x))), '+/-', toString(round(sd(x))))
         })
         
     }

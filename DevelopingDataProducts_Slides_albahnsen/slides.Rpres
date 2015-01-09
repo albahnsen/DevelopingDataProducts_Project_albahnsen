@@ -1,13 +1,15 @@
-DDP Course Project
+ 
 ========================================================
-author: Alejandro Correa Bahnsen
-date: Dec 21, 2014
 
-
-===
+### DDP Course Project
 ## Credit risk assesment app using multiple public data sources
 
-(insert picture)
+Alejandro Correa Bahnsen
+
+Jan 8, 2014
+***
+![temp](Understanding-Credit-Risk-Analytics.jpg)
+
 
 Objective
 ========================================================
@@ -16,23 +18,21 @@ The objective of this project is to assess the credit risk using public credit s
 
 The datasets were selected such that they contain similar structure and features.
 
-Afterwards a credit scoring model is create using each datasets and then combine to generate a prediction.
+Using each dataset credit scoring model is created using a random forest.
+        
+Then all the models are combined with the objective to have a better credit risk estimator.
 
-For more information on credit scoring see http://wikipedia.org/credit_scoring
+For more information on credit scoring see http://goo.gl/369Ee
 
 Datasets
 ===
 The following datasets were selected:
-  - German credit (http://archive.ics.uci.edu/ml/datasets/Statlog+%28German+Credit+Data%29)
-  - Kaggle Credit (http://www.kaggle.com/c/GiveMeSomeCredit)
-  - PAKDD Credit  (http://sede.neurotech.com.br:443/PAKDD2009/)
+GermanCredit http://goo.gl/mZD4cA
+KaggleCredit http://goo.gl/F8Xtz
+PAKDDCredit  http://goo.gl/V84elI
 
-This because they contain similar structure and features. 
 
-Datasets2
-===
-
-## Datasets information
+### Datasets information
 
 ```{r, echo=FALSE}
 load(file='datasets_info.Rda')
@@ -49,45 +49,31 @@ data.info[4,] <- c('under','under','under/over')
 data.info[c(-1,-2,-3),]
 ```
 
-Datasets3
-===
-
-With the objective of having comparable models, the following features were created
-  - Perfect credit history (bool)
-  - Age (numeric)
-  - Number of credits (numeric)
-  - Marital Status = Single (bool)
-  - Residence type = Own (bool)
-  - Income Rate (low, mid, high)
-
-The source code to create the datasets is available at: https://github.com/albahnsen/DevelopingDataProducts_Project_albahnsen/tree/master/model/create_dataset.R
-  
 Algorithms
 ===
-Using the random forest library one model is trained for each dataset
+
+With the objective of having comparable models, the following features were created:
+Perfect credit history; Age; Number of credits;
+Marital Status = Single; Residence type = Own; Income. 
+(http://goo.gl/Ml082W)
+
+Then, using the random forest library one model is trained for each dataset (http://goo.gl/feT02K)
 ```{r, eval=FALSE}
 library(randomForest)
-load('model/datasets.Rda')
-cla <- vector("list", 3)
-for (i in 0:2){
-    data.temp = data[data$set == i, -1]
-    cla[[i+1]] <- randomForest(
-                  factor(default) ~ .,
-                  data.temp, ntree=500)
-}
-save(cla, file='model/models.Rda')
+load('datasets.Rda')
+# For each dataset i:
+data.temp = data[data$set == i, -1]
+cla[[i+1]] <- randomForest(factor(default) ~ ., data.temp)
 ```
 
-For more information on Random Forests Algorithm see http://wikipedia.org/Random_Forest
-
-Prediction
+App
 ===
 
-After the algorithms are trained
+The app is composed of 2 parts:
 
-Slide With Plot
-========================================================
-
-```{r, echo=FALSE}
-plot(cars)
-```
+  - The input panel in which the user can modify the inputs of the scorecard
+  - And the output panel in which the calculated score is calculated
+  
+***
+![temp](screenshot.png)
+The app automatically recalculate the scores each time an input is modified

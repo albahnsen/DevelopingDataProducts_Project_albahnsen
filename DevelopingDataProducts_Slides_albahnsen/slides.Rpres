@@ -73,7 +73,9 @@ The app is composed of 2 parts:
 
   - The input panel in which the user can modify the inputs of the scorecard
   - And the output panel in which the calculated score is calculated
-  
+
+https://albahnsen.shinyapps.io/model/
+
 ***
 ![temp](screenshot.png)
 The app automatically recalculate the scores each time an input is modified
